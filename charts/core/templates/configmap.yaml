@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "dhis2-core-helm.fullname" . }}
+  labels:
+    {{- include "dhis2-core-helm.labels" . | nindent 4 }}
+data:
+  dhis.conf: |
+   {{- if .Values.customConfigSnippet }}
+   {{- .Values.customConfigSnippet | nindent 4 }}
+   {{- end }}
+    connection.dialect = org.hibernate.dialect.PostgreSQLDialect
+    connection.driver_class = org.postgresql.Driver
+    connection.url = jdbc:postgresql://${DB_HOSTNAME}/${DB_DATABASE}
+    connection.username = ${DB_USERNAME}
+    connection.password = ${DB_PASSWORD}
+    {{- if .Values.ingress.enabled }}
+    server.base.url = http{{ if .Values.ingress.certIssuer }}s{{ end }}://{{ .Values.ingress.hostname }}{{ .Values.ingress.path }}
+    server.https = {{ if .Values.ingress.certIssuer }}true{{ else }}false{{ end }}
+    {{- end }}
+    session.cookie.samesite = {{ .Values.sessionCookieSameSite }}
+    {{- if hasKey .Values "minIO" }}
+    filestore.provider = ${MINIO_PROVIDER}
+    filestore.container = ${MINIO_CONTAINER}
+    filestore.endpoint = ${MINIO_ENDPOINT}
+    filestore.location = ${MINIO_LOCATION}
+    filestore.identity = ${MINIO_IDENTITY}
+    filestore.secret = ${MINIO_SECRET}
+    {{- end }}
+    {{- if hasKey .Values "S3" }}
+    filestore.provider = ${S3_PROVIDER}
+    filestore.container = ${S3_CONTAINER}
+    filestore.endpoint = ${S3_ENDPOINT}
+    filestore.location = ${S3_LOCATION}
+    filestore.identity = ${S3_IDENTITY}
+    filestore.secret = ${S3_SECRET}
+    {{- end }}
+    flyway.migrate_out_of_order = ${FLYWAY_MIGRATE_OUT_OF_ORDER}
+    flyway.repair_before_migration = ${FLYWAY_REPAIR_BEFORE_MIGRATION}
+    enable.query.logging = ${ENABLE_QUERY_LOGGING}
+  log4j2.xml: |
+    {{- .Files.Get .Values.log4j2 | nindent 4 }}
+  server.xml: |
+    {{- .Files.Get .Values.serverXml | nindent 4 }}
+  dhis-google-auth.json: |
+    {
+      "type": "service_account",
+      "project_id": "{{ .Values.googleAuth.projectId }}",
+      "private_key_id": "{{ .Values.googleAuth.privateKeyId }}",
+      "private_key": "{{ .Values.googleAuth.privateKey }}",
+      "client_email": "{{ .Values.googleAuth.clientEmail }}",
+      "client_id": "{{ .Values.googleAuth.clientId }}",
+      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+      "token_uri": "https://oauth2.googleapis.com/token",
+      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dhis2-demo%40dhis2-gis.iam.gserviceaccount.com"
+    }
