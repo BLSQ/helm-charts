@@ -47,7 +47,7 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       
-      {{- if or .Values.initContainers $usesLocalStorage .Values.glowroot.enabled }}
+      {{- if or .Values.initContainers .Values.glowroot.enabled }}
       initContainers:
       {{- with .Values.initContainers }}
         {{- toYaml . | nindent 8 }}
