@@ -3,4 +3,4 @@ appVersion: 1.16.0
 description: DHIS 2 Helm Chart for Bluesquare
 name: core
 type: application
-version: 0.32.1
+version: 0.33.0

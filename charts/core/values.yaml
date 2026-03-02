@@ -95,39 +95,6 @@ enableQueryLogging: false
 #customConfigSnippet: |
 #  custom = property
 
-# -- If "minIO" or "S3" is configured, then the following configuration is ignored and no pvc will be created
-storage:
-  # -- Size of the Persistent Volume Claim, e.g., 8Gi for 8 gigabytes.
-  volumeSize: 8Gi
-  # -- Name of the storage class.
-  className: ~
-
-## "minIO" and "S3" are mutually exclusive, so make sure to only set one of them
-#minIO:
-#  # -- Provider type, currently only 's3' is supported.
-#  provider: s3
-#  # -- Container name in the storage service.
-#  container: dhis2
-#  # -- Endpoint URL for the MinIO or S3 server.
-#  endpoint: http://dhis2-minio.dhis2.svc:9000
-#  # -- AWS region or custom location identifier.
-#  location: eu-west-1
-#  # -- Access key ID or similar credential.
-#  identity: dhisdhis
-#  # -- Secret access key.
-#  secret: dhisdhis
-
-#S3:
-#  # -- Provider type, currently only 'aws-s3' is supported.
-#  provider: aws-s3
-#  # -- Container name in the storage service.
-#  container: dhis2
-#  # -- AWS region or custom location identifier.
-#  location: eu-west-1
-#  # -- Access key ID or similar credential.
-#  identity: dhisdhis
-#  # -- Secret access key.
-#  secret: dhisdhis
 
 # -- Init containers.
 initContainers: []

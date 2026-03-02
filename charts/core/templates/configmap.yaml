@@ -19,22 +19,12 @@ data:
     server.https = {{ if .Values.ingress.certIssuer }}true{{ else }}false{{ end }}
     {{- end }}
     session.cookie.samesite = {{ .Values.sessionCookieSameSite }}
-    {{- if hasKey .Values "minIO" }}
-    filestore.provider = ${MINIO_PROVIDER}
-    filestore.container = ${MINIO_CONTAINER}
-    filestore.endpoint = ${MINIO_ENDPOINT}
-    filestore.location = ${MINIO_LOCATION}
-    filestore.identity = ${MINIO_IDENTITY}
-    filestore.secret = ${MINIO_SECRET}
-    {{- end }}
-    {{- if hasKey .Values "S3" }}
     filestore.provider = ${S3_PROVIDER}
     filestore.container = ${S3_CONTAINER}
     filestore.endpoint = ${S3_ENDPOINT}
     filestore.location = ${S3_LOCATION}
     filestore.identity = ${S3_IDENTITY}
     filestore.secret = ${S3_SECRET}
-    {{- end }}
     flyway.migrate_out_of_order = ${FLYWAY_MIGRATE_OUT_OF_ORDER}
     flyway.repair_before_migration = ${FLYWAY_REPAIR_BEFORE_MIGRATION}
     enable.query.logging = ${ENABLE_QUERY_LOGGING}
