@@ -91,6 +91,28 @@ flyway:
 # -- Enable SQL query logging
 enableQueryLogging: false
 
+# OIDC Configuration for Azure
+oidc:
+  # -- Whether to enable OIDC login
+  enabled: false
+  # -- Enable OIDC OAuth2 login (on/off)
+  oauth2Login: "on"
+  # -- URL to redirect to after logging out
+  logoutRedirectUrl: ""
+  azure:
+    # -- Azure tenant ID
+    tenant: ""
+    # -- Azure client ID
+    clientId: ""
+    # -- Azure client secret
+    clientSecret: ""
+    # -- Authorized redirect URI
+    redirectUrl: ""
+    # -- Mapping claim, defaults to email
+    mappingClaim: email
+    # -- Support logout, defaults to on
+    supportLogout: "on"
+
 # -- Custom configuration snippet (optional).
 #customConfigSnippet: |
 #  custom = property

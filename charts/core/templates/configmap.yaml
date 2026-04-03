@@ -28,6 +28,18 @@ data:
     flyway.migrate_out_of_order = ${FLYWAY_MIGRATE_OUT_OF_ORDER}
     flyway.repair_before_migration = ${FLYWAY_REPAIR_BEFORE_MIGRATION}
     enable.query.logging = ${ENABLE_QUERY_LOGGING}
+    {{- if .Values.oidc.enabled }}
+    # OIDC Configuration
+    oidc.oauth2.login.enabled = {{ .Values.oidc.oauth2Login }}
+    oidc.provider.azure.0.tenant = {{ .Values.oidc.azure.tenant }}
+    oidc.provider.azure.0.client_id = {{ .Values.oidc.azure.clientId }}
+    oidc.provider.azure.0.client_secret = {{ .Values.oidc.azure.clientSecret }}
+    oidc.provider.azure.0.redirect_url = {{ .Values.oidc.azure.redirectUrl }}
+    oidc.logout.redirect_url = {{ .Values.oidc.logoutRedirectUrl }}
+    oidc.provider.azure.0.mapping_claim = {{ .Values.oidc.azure.mappingClaim }}
+    oidc.provider.azure.0.support_logout = {{ .Values.oidc.azure.supportLogout }}
+    {{- end }}
+
   log4j2.xml: |
     {{- .Files.Get .Values.log4j2 | nindent 4 }}
   server.xml: |

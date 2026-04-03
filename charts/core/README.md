@@ -66,6 +66,15 @@ DHIS 2 Helm Chart for Bluesquare
 | minReadySeconds | int | `120` | Minimum number of seconds for the pod to be ready before being considered available. |
 | nameOverride | string | `""` | Overrides the chart's default name. |
 | nodeSelector | object | `{}` | Node selector labels that allow pods to be scheduled only onto nodes matching these labels. |
+| oidc.azure.clientId | string | `""` | Azure client ID |
+| oidc.azure.clientSecret | string | `""` | Azure client secret |
+| oidc.azure.mappingClaim | string | `"email"` | Mapping claim, defaults to email |
+| oidc.azure.redirectUrl | string | `""` | Authorized redirect URI |
+| oidc.azure.supportLogout | string | `"on"` | Support logout, defaults to on |
+| oidc.azure.tenant | string | `""` | Azure tenant ID |
+| oidc.enabled | bool | `false` | Whether to enable OIDC login |
+| oidc.logoutRedirectUrl | string | `""` | URL to redirect to after logging out |
+| oidc.oauth2Login | string | `"on"` | Enable OIDC OAuth2 login (on/off) |
 | podAnnotations | object | `{}` | Annotations applied to all pods deployed by this chart. |
 | podLabels | object | `{}` | Labels applied to all pods deployed by this chart. |
 | podSecurityContext | object | `{}` | Security context settings for pods (e.g., fsGroup). |
