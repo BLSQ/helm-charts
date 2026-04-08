@@ -89,6 +89,8 @@ spec:
               value: "-Dlog4j2.configurationFile={{ .Values.dhis2Home }}/log4j2.xml -Dcontext.sameSiteCookies={{ .Values.sessionCookieSameSite }} -Dcontext.path={{ .Values.contextPath }} {{- if .Values.glowroot.enabled }} -javaagent:/glowroot/glowroot.jar -Dglowroot.conf.dir=/glowroot -Dglowroot.data.dir=/glowroot-data -Dglowroot.log.dir=/glowroot-data -Dglowroot.tmp.dir=/glowroot-data{{- end }} {{ .Values.javaOpts }}"
             - name: DHIS2_HOME
               value: {{ .Values.dhis2Home }}
+            - name: DHIS2_VERSION
+              value: {{ .Values.image.tag | default .Chart.AppVersion }}
             - name: SERVER_SERVLET_CONTEXT_PATH
               value: {{ .Values.contextPath }}
           envFrom:
