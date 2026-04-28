@@ -6,7 +6,7 @@ metadata:
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
-    #"helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+
 spec:
   ttlSecondsAfterFinished: 3600
   template:
@@ -45,7 +45,7 @@ metadata:
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
-    #"helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+
 spec:
   ttlSecondsAfterFinished: 3600
   template:
@@ -78,6 +78,70 @@ spec:
 
 ---
 
+{{- if .Values.jobs.createMetricsUser.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ include "dhis2-core-helm.fullname" . }}-create-metrics-user"
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "0"
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      containers:
+        - name: {{ include "dhis2-core-helm.fullname" . }}-create-metrics-user-job
+          image: alpine/k8s:1.29.0
+          env:
+            - name: SERVICE_URL
+              value: "http://{{ include "dhis2-core-helm.fullname" . }}:{{ .Values.service.port }}{{ .Values.ingress.path }}"
+            - name: ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dhis2-core-helm.fullname" . }}
+                  key: USERNAME
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dhis2-core-helm.fullname" . }}
+                  key: PASSWORD
+            - name: METRICS_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: blsq-dhis2-metrics-admin
+                  key: username
+            - name: METRICS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: blsq-dhis2-metrics-admin
+                  key: password
+            {{- with .Values.jobs.createMetricsUser.userRoleIds }}
+            - name: USER_ROLE_IDS
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.jobs.createMetricsUser.orgUnitIds }}
+            - name: ORG_UNIT_IDS
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.jobs.createMetricsUser.firstName }}
+            - name: METRICS_FIRST_NAME
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.jobs.createMetricsUser.surname }}
+            - name: METRICS_SURNAME
+              value: {{ . | quote }}
+            {{- end }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              {{- .Files.Get "scripts/create-metrics-user.sh" | nindent 15 }}
+      restartPolicy: OnFailure
+{{- end }}
+
+---
+
 {{- if .Values.jobs.installApps.enabled }}
 apiVersion: batch/v1
 kind: Job
@@ -86,7 +150,7 @@ metadata:
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
-    #"helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+
 spec:
   ttlSecondsAfterFinished: 3600
   template:

@@ -1,6 +1,6 @@
 # core
 
-![Version: 0.33.3](https://img.shields.io/badge/Version-0.33.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.33.4](https://img.shields.io/badge/Version-0.33.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 DHIS 2 Helm Chart for Bluesquare
 
@@ -46,6 +46,11 @@ DHIS 2 Helm Chart for Bluesquare
 | javaOpts | string | `""` | Additional options for JVM.catalinaOpts: "-Dcontext.path='' -Dcontext.sameSiteCookies='lax'" |
 | jobs.authentication.dhis2.password | string | `"bluesquare"` | Default DHIS2 username. |
 | jobs.authentication.dhis2.username | string | `"admin"` | Default DHIS2 username. |
+| jobs.createMetricsUser.enabled | bool | `true` | Whether the "Create Metrics User" job is enabled. |
+| jobs.createMetricsUser.firstName | string | `"Metrics"` | First name for the metrics user. |
+| jobs.createMetricsUser.orgUnitIds | string | `""` | Comma-separated organisation unit IDs to assign to the metrics user. |
+| jobs.createMetricsUser.surname | string | `"User"` | Surname for the metrics user. |
+| jobs.createMetricsUser.userRoleIds | string | `""` | Comma-separated user role IDs to assign to the metrics user. |
 | jobs.enableUsers.enabled | bool | `false` | Whether the "Enable Users" job is enabled. |
 | jobs.enableUsers.targetUser | string | `"alinana,arabiceB"` | List of users to target. Support multiple users by adding a comma-separated list of usernames. |
 | jobs.generateAnalytics.enabled | bool | `false` | Whether the "Generate Analytics" job is enabled. |
