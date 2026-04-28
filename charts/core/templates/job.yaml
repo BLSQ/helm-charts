@@ -45,7 +45,6 @@ metadata:
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
-
 spec:
   ttlSecondsAfterFinished: 3600
   template:
@@ -86,6 +85,7 @@ metadata:
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
+    "argocd.argoproj.io/sync-wave": "1"
 spec:
   ttlSecondsAfterFinished: 3600
   template:
@@ -99,22 +99,22 @@ spec:
             - name: ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "dhis2-core-helm.fullname" . }}
-                  key: USERNAME
+                  name: blsq-dhis2-metrics-admin-secret
+                  key: initial-username
             - name: ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "dhis2-core-helm.fullname" . }}
-                  key: PASSWORD
+                  name: blsq-dhis2-metrics-admin-secret
+                  key: intial-password
             - name: METRICS_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: blsq-dhis2-metrics-admin
+                  name: blsq-dhis2-metrics-admin-secret
                   key: username
             - name: METRICS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: blsq-dhis2-metrics-admin
+                  name: blsq-dhis2-metrics-admin-secret
                   key: password
             {{- with .Values.jobs.createMetricsUser.userRoleIds }}
             - name: USER_ROLE_IDS
