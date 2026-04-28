@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-set -eo pipefail
+set -exo pipefail
 
 if [ -z "$SERVICE_URL" ] || [ -z "$ADMIN_USERNAME" ] || [ -z "$ADMIN_PASSWORD" ] || [ -z "$METRICS_USERNAME" ] || [ -z "$METRICS_PASSWORD" ]; then
   echo "Error: Required environment variables are not set. Please set SERVICE_URL, ADMIN_USERNAME, ADMIN_PASSWORD, METRICS_USERNAME, METRICS_PASSWORD."
@@ -24,16 +24,48 @@ fi
 
 echo "Creating metrics user '$METRICS_USERNAME'..."
 
-# Build userRoles array from comma-separated USER_ROLE_IDS
-user_roles="[]"
-if [ -n "$USER_ROLE_IDS" ]; then
-  user_roles=$(echo "$USER_ROLE_IDS" | tr ',' '\n' | jq -R '{"id": .}' | jq -s '.')
-fi
+# Fetch Superuser role ID (has ALL authority)
+echo "Fetching Superuser role..."
+superuser_role=$(curl --fail --silent --show-error --location \
+  --user "$ADMIN_USERNAME:$ADMIN_PASSWORD" \
+  "$SERVICE_URL/api/userRoles?filter=name:eq:Superuser&fields=id&pageSize=1")
+superuser_role_id=$(echo "$superuser_role" | jq -r '.userRoles[0].id')
 
-# Build organisationUnits array from comma-separated ORG_UNIT_IDS
-org_units="[]"
-if [ -n "$ORG_UNIT_IDS" ]; then
-  org_units=$(echo "$ORG_UNIT_IDS" | tr ',' '\n' | jq -R '{"id": .}' | jq -s '.')
+if [ -z "$superuser_role_id" ] || [ "$superuser_role_id" = "null" ]; then
+  echo "Error: Could not find 'Superuser' role. Available roles:"
+  curl --fail --silent --show-error --location \
+    --user "$ADMIN_USERNAME:$ADMIN_PASSWORD" \
+    "$SERVICE_URL/api/userRoles?fields=id,name" | jq '.userRoles[] | {id, name}'
+  exit 1
+fi
+echo "Found Superuser role: $superuser_role_id"
+user_roles=$(jq -n --arg id "$superuser_role_id" '[{"id": $id}]')
+
+# Fetch first available organisation unit
+echo "Fetching organisation unit..."
+org_response=$(curl --fail --silent --show-error --location \
+  --user "$ADMIN_USERNAME:$ADMIN_PASSWORD" \
+  "$SERVICE_URL/api/organisationUnits?fields=id,name&pageSize=1")
+org_id=$(echo "$org_response" | jq -r '.organisationUnits[0].id')
+
+if [ -z "$org_id" ] || [ "$org_id" = "null" ]; then
+  echo "No organisation units found. Creating a default root (blsq) org unit..."
+  create_org_response=$(curl --fail --silent --show-error --location \
+    --user "$ADMIN_USERNAME:$ADMIN_PASSWORD" \
+    --request POST "$SERVICE_URL/api/organisationUnits" \
+    --header "Content-Type: application/json" \
+    --data '{"name": "blsq", "shortName": "blsq", "openingDate": "1970-01-01"}')
+  org_id=$(echo "$create_org_response" | jq -r '.response.uid')
+  if [ -z "$org_id" ] || [ "$org_id" = "null" ]; then
+    echo "Error: Failed to create default org unit."
+    echo "Response: $create_org_response"
+    exit 1
+  fi
+  echo "Created default org unit: $org_id"
+  org_units=$(jq -n --arg id "$org_id" '[{"id": $id}]')
+else
+  echo "Using org unit: $org_id"
+  org_units=$(jq -n --arg id "$org_id" '[{"id": $id}]')
 fi
 
 payload=$(jq -n \
@@ -46,23 +78,25 @@ payload=$(jq -n \
   '{
     firstName: $firstName,
     surname: $surname,
-    userCredentials: {
-      username: $username,
-      password: $password,
-      userRoles: $userRoles
-    },
+    username: $username,
+    password: $password,
+    userRoles: $userRoles,
     organisationUnits: $organisationUnits
   }')
 
-response=$(curl --fail --silent --show-error --location \
+response=$(curl --silent --show-error --location \
   --user "$ADMIN_USERNAME:$ADMIN_PASSWORD" \
   --request POST "$SERVICE_URL/api/users" \
   --header "Content-Type: application/json" \
+  --write-out "\n%{http_code}" \
   --data "$payload")
 
-if [ $? -ne 0 ]; then
-  echo "Error: Failed to create metrics user."
-  echo "Response: $response"
+http_code=$(echo "$response" | tail -1)
+body=$(echo "$response" | sed '$d')
+
+if [ "$http_code" -lt 200 ] || [ "$http_code" -ge 300 ]; then
+  echo "Error: Failed to create metrics user (HTTP $http_code)."
+  echo "Response: $body"
   exit 1
 fi
 
