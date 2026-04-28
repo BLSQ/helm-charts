@@ -52,6 +52,17 @@ jobs:
     enabled: false
     # -- List of users to target. Support multiple users by adding a comma-separated list of usernames.
     targetUser: alinana,arabiceB
+  createMetricsUser:
+    # -- Whether the "Create Metrics User" job is enabled.
+    enabled: true
+    # -- Comma-separated user role IDs to assign to the metrics user.
+    userRoleIds: ""
+    # -- Comma-separated organisation unit IDs to assign to the metrics user.
+    orgUnitIds: ""
+    # -- First name for the metrics user.
+    firstName: Metrics
+    # -- Surname for the metrics user.
+    surname: User
   installApps:
     # -- Whether the "Install Apps" job is enabled.
     enabled: false
