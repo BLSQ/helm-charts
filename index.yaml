@@ -3,6 +3,16 @@ entries:
   core:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-04-28T09:22:36.711344648Z"
+    description: DHIS 2 Helm Chart for Bluesquare
+    digest: bde902153aeb3a216eb562206ce1aee80b86af9eaaaf649a8f32992763d11568
+    name: core
+    type: application
+    urls:
+    - https://github.com/BLSQ/helm-charts/releases/download/core-0.33.5/core-0.33.5.tgz
+    version: 0.33.5
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-04-28T09:02:03.652936264Z"
     description: DHIS 2 Helm Chart for Bluesquare
     digest: 85ce69d979ec6117f31644e1ea322bece91ee4b32fcd08a4865fa934b79cf433
@@ -61,4 +71,4 @@ entries:
     urls:
     - https://github.com/BLSQ/helm-charts/releases/download/core-0.32.1/core-0.32.1.tgz
     version: 0.32.1
-generated: "2026-04-28T09:02:03.652958474Z"
+generated: "2026-04-28T09:22:36.711380581Z"
