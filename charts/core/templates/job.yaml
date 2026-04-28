@@ -95,7 +95,7 @@ spec:
           image: alpine/k8s:1.29.0
           env:
             - name: SERVICE_URL
-              value: "http://{{ include "dhis2-core-helm.fullname" . }}:{{ .Values.service.port }}{{ .Values.ingress.path }}"
+              value: "http://{{ include "dhis2-core-helm.fullname" . }}:{{ .Values.service.port }}"
             - name: ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
