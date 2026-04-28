@@ -105,7 +105,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: blsq-dhis2-metrics-admin-secret
-                  key: intial-password
+                  key: initial-password
             - name: METRICS_USERNAME
               valueFrom:
                 secretKeyRef:
