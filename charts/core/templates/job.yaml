@@ -77,6 +77,104 @@ spec:
 
 ---
 
+{{- if .Values.jobs.removeDefaultAdmin.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ include "dhis2-core-helm.fullname" . }}-remove-default-admin"
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "1"
+    "argocd.argoproj.io/sync-wave": "2"
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      containers:
+        - name: {{ include "dhis2-core-helm.fullname" . }}-remove-default-admin-job
+          image: alpine/k8s:1.29.0
+          env:
+            - name: SERVICE_URL
+              value: "http://{{ include "dhis2-core-helm.fullname" . }}:{{ .Values.service.port }}"
+            - name: ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dhis2-core-helm.fullname" . }}
+                  key: USERNAME
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dhis2-core-helm.fullname" . }}
+                  key: PASSWORD
+            - name: TARGET_USERNAME
+              value: {{ .Values.jobs.removeDefaultAdmin.targetUsername | quote }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              {{- .Files.Get "scripts/remove-default-admin.sh" | nindent 15 }}
+      restartPolicy: OnFailure
+{{- end }}
+
+---
+
+{{- if .Values.jobs.createDefaultUser.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ include "dhis2-core-helm.fullname" . }}-create-default-user"
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "0"
+    "argocd.argoproj.io/sync-wave": "1"
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      containers:
+        - name: {{ include "dhis2-core-helm.fullname" . }}-create-default-user-job
+          image: alpine/k8s:1.29.0
+          env:
+            - name: SERVICE_URL
+              value: "http://{{ include "dhis2-core-helm.fullname" . }}:{{ .Values.service.port }}"
+            - name: ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dhis2-core-helm.fullname" . }}
+                  key: USERNAME
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dhis2-core-helm.fullname" . }}
+                  key: PASSWORD
+            - name: DEFAULT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dhis2-core-helm.fullname" . }}-core-default-user-credentials-secret
+                  key: username
+            - name: DEFAULT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dhis2-core-helm.fullname" . }}-core-default-user-credentials-secret
+                  key: password
+            {{- with .Values.jobs.createDefaultUser.firstName }}
+            - name: DEFAULT_FIRST_NAME
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.jobs.createDefaultUser.surname }}
+            - name: DEFAULT_SURNAME
+              value: {{ . | quote }}
+            {{- end }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              {{- .Files.Get "scripts/create-default-user.sh" | nindent 15 }}
+      restartPolicy: OnFailure
+{{- end }}
+
+---
+
 {{- if .Values.jobs.createMetricsUser.enabled }}
 apiVersion: batch/v1
 kind: Job

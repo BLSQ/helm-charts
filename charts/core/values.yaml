@@ -52,6 +52,19 @@ jobs:
     enabled: false
     # -- List of users to target. Support multiple users by adding a comma-separated list of usernames.
     targetUser: alinana,arabiceB
+  createDefaultUser:
+    # -- Whether the "Create Default User" job is enabled.
+    enabled: true
+    # -- First name for the default user.
+    firstName: Console
+    # -- Surname for the default user.
+    surname: User
+
+  removeDefaultAdmin:
+    # -- Whether the "Remove Default Admin" job is enabled. Disables the default admin user (admin/district).
+    enabled: true
+    # -- Username of the default admin to disable.
+    targetUsername: admin
   createMetricsUser:
     # -- Whether the "Create Metrics User" job is enabled.
     enabled: true
