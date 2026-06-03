@@ -1,6 +1,6 @@
 # core
 
-![Version: 0.34.0](https://img.shields.io/badge/Version-0.34.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.34.1](https://img.shields.io/badge/Version-0.34.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 DHIS 2 Helm Chart for Bluesquare
 
@@ -59,6 +59,8 @@ DHIS 2 Helm Chart for Bluesquare
 | jobs.generateAnalytics.enabled | bool | `false` | Whether the "Generate Analytics" job is enabled. |
 | jobs.installApps.apps | list | `[{"name":"Capture","version":"latest"},{"name":"Dashboard","version":"latest"}]` | List of applications to install/update |
 | jobs.installApps.enabled | bool | `false` | Whether the "Install Apps" job is enabled. |
+| jobs.removeDefaultAdmin.defaultPassword | string | `"district"` | Default DHIS2 password. |
+| jobs.removeDefaultAdmin.defaultUsername | string | `"admin"` | Default DHIS2 username. |
 | jobs.removeDefaultAdmin.enabled | bool | `true` | Whether the "Remove Default Admin" job is enabled. Disables the default admin user (admin/district). |
 | jobs.removeDefaultAdmin.targetUsername | string | `"admin"` | Username of the default admin to disable. |
 | keda.enabled | bool | `false` | Whether to enable KEDA scaling or not. |

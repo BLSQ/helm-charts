@@ -77,7 +77,7 @@ spec:
 
 ---
 
-{{- if .Values.jobs.removeDefaultAdmin.enabled }}
+{{- if .Values.jobs.createDefaultUser.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -97,15 +97,9 @@ spec:
             - name: SERVICE_URL
               value: "http://{{ include "dhis2-core-helm.fullname" . }}:{{ .Values.service.port }}"
             - name: ADMIN_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "dhis2-core-helm.fullname" . }}
-                  key: USERNAME
+              value: {{ .Values.jobs.removeDefaultAdmin.defaultUsername | quote }}
             - name: ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "dhis2-core-helm.fullname" . }}
-                  key: PASSWORD
+              value: {{ .Values.jobs.removeDefaultAdmin.defaultPassword | quote }}
             - name: TARGET_USERNAME
               value: {{ .Values.jobs.removeDefaultAdmin.targetUsername | quote }}
           command:
