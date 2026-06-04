@@ -138,12 +138,12 @@ spec:
             - name: DEFAULT_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "dhis2-core-helm.fullname" . }}-core-default-user-credentials-secret
+                  name: {{ include "dhis2-core-helm.fullname" . }}-default-user-credentials-secret
                   key: username
             - name: DEFAULT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "dhis2-core-helm.fullname" . }}-core-default-user-credentials-secret
+                  name: {{ include "dhis2-core-helm.fullname" . }}-default-user-credentials-secret
                   key: password
             {{- with .Values.jobs.createDefaultUser.firstName }}
             - name: DEFAULT_FIRST_NAME
