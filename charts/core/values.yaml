@@ -59,16 +59,10 @@ jobs:
     firstName: Console
     # -- Surname for the default user.
     surname: User
-
-  removeDefaultAdmin:
-    # -- Whether the "Remove Default Admin" job is enabled. Disables the default admin user (admin/district).
-    enabled: true
     # -- Default DHIS2 username.
-    defaultUsername: admin
+    defaultAdminUsername: admin
     # -- Default DHIS2 password.
-    defaultPassword: district
-    # -- Username of the default admin to disable.
-    targetUsername: admin
+    defaultAdminPassword: district
   createMetricsUser:
     # -- Whether the "Create Metrics User" job is enabled.
     enabled: true

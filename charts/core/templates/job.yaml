@@ -97,11 +97,11 @@ spec:
             - name: SERVICE_URL
               value: "http://{{ include "dhis2-core-helm.fullname" . }}:{{ .Values.service.port }}"
             - name: ADMIN_USERNAME
-              value: {{ .Values.jobs.removeDefaultAdmin.defaultUsername | quote }}
+              value: {{ .Values.jobs.createDefaultUser.defaultAdminUsername | quote }}
             - name: ADMIN_PASSWORD
-              value: {{ .Values.jobs.removeDefaultAdmin.defaultPassword | quote }}
+              value: {{ .Values.jobs.createDefaultUser.defaultAdminPassword | quote }}
             - name: TARGET_USERNAME
-              value: {{ .Values.jobs.removeDefaultAdmin.targetUsername | quote }}
+              value: {{ .Values.jobs.createDefaultUser.defaultAdminUsername | quote }}
           command:
             - /bin/sh
             - -c
