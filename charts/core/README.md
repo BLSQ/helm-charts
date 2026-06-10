@@ -1,6 +1,6 @@
 # core
 
-![Version: 0.34.6](https://img.shields.io/badge/Version-0.34.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.34.7](https://img.shields.io/badge/Version-0.34.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 DHIS 2 Helm Chart for Bluesquare
 
@@ -49,7 +49,7 @@ DHIS 2 Helm Chart for Bluesquare
 | jobs.createDefaultUser.defaultAdminPassword | string | `"district"` | Default DHIS2 password. |
 | jobs.createDefaultUser.defaultAdminUsername | string | `"admin"` | Default DHIS2 username. |
 | jobs.createDefaultUser.enabled | bool | `true` | Whether the "Create Default User" job is enabled. |
-| jobs.createDefaultUser.firstName | string | `"Console"` | First name for the default user. |
+| jobs.createDefaultUser.firstName | string | `"DHIS2"` | First name for the default user. |
 | jobs.createDefaultUser.surname | string | `"User"` | Surname for the default user. |
 | jobs.createMetricsUser.enabled | bool | `true` | Whether the "Create Metrics User" job is enabled. |
 | jobs.createMetricsUser.firstName | string | `"Metrics"` | First name for the metrics user. |

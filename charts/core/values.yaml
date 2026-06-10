@@ -56,7 +56,7 @@ jobs:
     # -- Whether the "Create Default User" job is enabled.
     enabled: true
     # -- First name for the default user.
-    firstName: Console
+    firstName: DHIS2
     # -- Surname for the default user.
     surname: User
     # -- Default DHIS2 username.
