@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-set -exo pipefail
+set -eo pipefail
 
 if [ -z "$SERVICE_URL" ] || [ -z "$ADMIN_USERNAME" ] || [ -z "$ADMIN_PASSWORD" ] || [ -z "$DEFAULT_USERNAME" ] || [ -z "$DEFAULT_PASSWORD" ]; then
   echo "Error: Required environment variables are not set. Please set SERVICE_URL, ADMIN_USERNAME, ADMIN_PASSWORD, DEFAULT_USERNAME, DEFAULT_PASSWORD."
@@ -10,7 +10,18 @@ echo "Waiting for DHIS2 service to be ready... $SERVICE_URL"
 curl --fail --silent --show-error --output /dev/null --retry 100 --retry-delay 6 --retry-connrefused "$SERVICE_URL"
 echo "DHIS2 service is ready."
 
-# Check if user already exists
+# Check if default user can already log in (means this script ran before)
+default_login_code=$(curl --silent --output /dev/null \
+  --user "$DEFAULT_USERNAME:$DEFAULT_PASSWORD" \
+  --write-out "%{http_code}" \
+  "$SERVICE_URL/api/me")
+
+if [ "$default_login_code" = "200" ]; then
+  echo "Default user '$DEFAULT_USERNAME' can already log in. Nothing to do."
+  exit 0
+fi
+
+# Check if user already exists via admin creds
 existing_user=$(curl --fail --silent --show-error --location \
   --user "$ADMIN_USERNAME:$ADMIN_PASSWORD" \
   "$SERVICE_URL/api/users?fields=id&filter=username:eq:$DEFAULT_USERNAME")
