@@ -10,6 +10,17 @@ echo "Waiting for DHIS2 service to be ready... $SERVICE_URL"
 curl --fail --silent --show-error --output /dev/null --retry 100 --retry-delay 6 --retry-connrefused "$SERVICE_URL"
 echo "DHIS2 service is ready."
 
+# Quick check: if admin can't login, already disabled — nothing to do
+admin_login_code=$(curl --silent --output /dev/null \
+  --user "$ADMIN_USERNAME:$ADMIN_PASSWORD" \
+  --write-out "%{http_code}" \
+  "$SERVICE_URL/api/me")
+
+if [ "$admin_login_code" = "401" ] || [ "$admin_login_code" = "403" ]; then
+  echo "Admin '$ADMIN_USERNAME' can't log in (HTTP $admin_login_code). Already disabled."
+  exit 0
+fi
+
 # Lookup target user
 existing_user=$(curl --fail --silent --show-error --location \
   --user "$ADMIN_USERNAME:$ADMIN_PASSWORD" \
