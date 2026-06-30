@@ -338,7 +338,7 @@ clickhouse:
   # -- ClickHouse port
   port: 8123
   # -- ClickHouse named collection (database)
-  named_collection: dhis2
+  catalog: dhis2
   # -- ClickHouse database
   database: clickhouse
   # -- ClickHouse username
