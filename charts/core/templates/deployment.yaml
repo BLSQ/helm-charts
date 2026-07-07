@@ -101,6 +101,10 @@ spec:
                 name: {{ include "dhis2-core-helm.fullname" . }}-s3-filestore-secret
             - configMapRef:
                 name: {{ include "dhis2-core-helm.fullname" . }}-env
+          {{- if .Values.clickhouseAnalytics.enabled }}
+            - secretRef:
+                name: {{ include "dhis2-core-helm.fullname" . }}-clickhouse-database-secret
+          {{- end }}
           ports:
             - name: http
               containerPort: 8080

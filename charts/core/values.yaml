@@ -330,18 +330,10 @@ tolerations:
 affinity: {}
 
 # -- Configuration for ClickHouse analytics database.
-clickhouse:
+clickhouseAnalytics:
   # -- Whether to enable ClickHouse analytics database or not.
   enabled: false
   # -- ClickHouse host
   host: clickhouse-cluster-clickhouse-headless.clickhouse-operator.svc.cluster.local
   # -- ClickHouse port
   port: 8123
-  # -- ClickHouse named collection (database)
-  catalog: dhis2
-  # -- ClickHouse database
-  database: clickhouse
-  # -- ClickHouse username
-  username: default
-  # -- ClickHouse password
-  password: ""

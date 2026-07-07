@@ -10,12 +10,12 @@ data:
     {{- .Values.customConfigSnippet | nindent 4 }}
     {{- end }}
     # Clickhouse configuration
-    {{- if .Values.clickhouse.enabled }}
-    analytics.database = {{ .Values.clickhouse.database }}
-    analytics.connection.url = jdbc:clickhouse://{{ .Values.clickhouse.host }}:{{ .Values.clickhouse.port }}/{{ .Values.clickhouse.catalog }}
-    analytics.database.catalog = {{ .Values.clickhouse.catalog }}
-    analytics.connection.username = {{ .Values.clickhouse.username }}
-    analytics.connection.password = {{ .Values.clickhouse.password }}
+    {{- if .Values.clickhouseAnalytics.enabled }}
+    analytics.database = clickhouse
+    analytics.connection.url = jdbc:clickhouse://{{ .Values.clickhouseAnalytics.host }}:{{ .Values.clickhouseAnalytics.port }}/${DHIS2_CH_DATABASE}
+    analytics.database.catalog = ${DHIS2_CH_DATABASE}
+    analytics.connection.username = ${DHIS2_CH_USER}
+    analytics.connection.password = ${DHIS2_CH_PASSWORD}
     {{- end }}
     connection.dialect = org.hibernate.dialect.PostgreSQLDialect
     connection.driver_class = org.postgresql.Driver
