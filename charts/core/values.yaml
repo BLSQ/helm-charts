@@ -328,3 +328,12 @@ tolerations:
 
 # -- Affinity rules for pod scheduling, allowing you to define preferred or required co-location of pods.
 affinity: {}
+
+# -- Configuration for ClickHouse analytics database.
+clickhouseAnalytics:
+  # -- Whether to enable ClickHouse analytics database or not.
+  enabled: false
+  # -- ClickHouse host
+  host: clickhouse-cluster-clickhouse-headless.clickhouse-operator.svc.cluster.local
+  # -- ClickHouse port
+  port: 8123

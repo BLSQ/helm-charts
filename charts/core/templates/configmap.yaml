@@ -6,9 +6,17 @@ metadata:
     {{- include "dhis2-core-helm.labels" . | nindent 4 }}
 data:
   dhis.conf: |
-   {{- if .Values.customConfigSnippet }}
-   {{- .Values.customConfigSnippet | nindent 4 }}
-   {{- end }}
+    {{- if .Values.customConfigSnippet }}
+    {{- .Values.customConfigSnippet | nindent 4 }}
+    {{- end }}
+    # Clickhouse configuration
+    {{- if .Values.clickhouseAnalytics.enabled }}
+    analytics.database = clickhouse
+    analytics.connection.url = jdbc:clickhouse://{{ .Values.clickhouseAnalytics.host }}:{{ .Values.clickhouseAnalytics.port }}/${DHIS2_CH_DATABASE}
+    analytics.database.catalog = ${DHIS2_CH_DATABASE}
+    analytics.connection.username = ${DHIS2_CH_USER}
+    analytics.connection.password = ${DHIS2_CH_PASSWORD}
+    {{- end }}
     connection.dialect = org.hibernate.dialect.PostgreSQLDialect
     connection.driver_class = org.postgresql.Driver
     connection.url = jdbc:postgresql://${DB_HOSTNAME}/${DB_DATABASE}

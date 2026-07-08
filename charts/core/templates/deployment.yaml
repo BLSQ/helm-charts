@@ -93,6 +93,25 @@ spec:
               value: {{ .Values.image.tag | default .Chart.AppVersion }}
             - name: SERVER_SERVLET_CONTEXT_PATH
               value: {{ .Values.contextPath }}
+          {{- if .Values.clickhouseAnalytics.enabled }}
+            - name: DHIS2_CH_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dhis2-core-helm.fullname" . }}-clickhouse-credentials-secret
+                  key: username
+
+            - name: DHIS2_CH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dhis2-core-helm.fullname" . }}-clickhouse-credentials-secret
+                  key: password
+
+            - name: DHIS2_CH_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dhis2-core-helm.fullname" . }}-clickhouse-credentials-secret
+                  key: database
+          {{- end }}
           envFrom:
             # This needs to be {{ include "dhis2-core-helm.fullname" . }}-cluster-secrets
             - secretRef:
