@@ -97,19 +97,19 @@ spec:
             - name: DHIS2_CH_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "dhis2-core-helm.fullname" . }}-clickhouse-dhis2-database-secret
+                  name: {{ include "dhis2-core-helm.fullname" . }}-clickhouse-credentials-secret
                   key: username
 
             - name: DHIS2_CH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "dhis2-core-helm.fullname" . }}-clickhouse-dhis2-database-secret
+                  name: {{ include "dhis2-core-helm.fullname" . }}-clickhouse-credentials-secret
                   key: password
 
             - name: DHIS2_CH_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "dhis2-core-helm.fullname" . }}-clickhouse-dhis2-database-secret
+                  name: {{ include "dhis2-core-helm.fullname" . }}-clickhouse-credentials-secret
                   key: database
           {{- end }}
           envFrom:
