@@ -1,6 +1,6 @@
 # core
 
-![Version: 0.34.7](https://img.shields.io/badge/Version-0.34.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.35.0](https://img.shields.io/badge/Version-0.35.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 DHIS 2 Helm Chart for Bluesquare
 
@@ -13,6 +13,10 @@ DHIS 2 Helm Chart for Bluesquare
 | autoscaling.maxReplicas | int | `100` | Maximum number of replicas for the deployment. |
 | autoscaling.minReplicas | int | `1` | Minimum number of replicas for the deployment. |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU utilization percentage to scale based on. |
+| clickhouseAnalytics | object | `{"enabled":false,"host":"clickhouse-cluster-clickhouse-headless.clickhouse-operator.svc.cluster.local","port":8123}` | Configuration for ClickHouse analytics database. |
+| clickhouseAnalytics.enabled | bool | `false` | Whether to enable ClickHouse analytics database or not. |
+| clickhouseAnalytics.host | string | `"clickhouse-cluster-clickhouse-headless.clickhouse-operator.svc.cluster.local"` | ClickHouse host |
+| clickhouseAnalytics.port | int | `8123` | ClickHouse port |
 | commonLabels | object | `{}` | Common labels applied to all Kubernetes resources created by this chart. |
 | contextPath | string | `"/"` | Context path settings for Embedded Tomcat |
 | dhis2Home | string | `"/opt/dhis2"` | DHIS 2 home directory. |
