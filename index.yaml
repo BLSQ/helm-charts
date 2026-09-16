@@ -1,5 +1,23 @@
 apiVersion: v1
 entries:
+  chap:
+  - annotations:
+      category: Application
+    apiVersion: v2
+    appVersion: v2.1.0
+    created: "2026-09-16T13:40:49.450765864Z"
+    dependencies:
+    - condition: valkey.enabled
+      name: valkey
+      repository: https://valkey.io/valkey-helm
+      version: 0.9.2
+    description: CHAP (Climate Health Analysis Platform)
+    digest: 954f6030e1ceb88b982e2057cd6aad238c424b9fbed72752141feb6998ebbb65
+    name: chap
+    type: application
+    urls:
+    - https://github.com/BLSQ/helm-charts/releases/download/chap-1.1.1/chap-1.1.1.tgz
+    version: 1.1.1
   core:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -211,4 +229,4 @@ entries:
     urls:
     - https://github.com/BLSQ/helm-charts/releases/download/core-0.32.1/core-0.32.1.tgz
     version: 0.32.1
-generated: "2026-07-31T09:26:32.550947999Z"
+generated: "2026-09-16T13:40:49.45081694Z"
