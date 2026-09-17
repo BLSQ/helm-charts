@@ -21,7 +21,7 @@ spec:
   instances: {{ .Values.db.instances }}
   {{- if .Values.db.imageName }}
   imageName: {{ .Values.db.imageName }}
-  {{- end }}}
+  {{- end }}
   storage:
     size: {{ .Values.db.storageSize }}
   {{- if .Values.db.database }}
