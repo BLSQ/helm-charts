@@ -21,10 +21,7 @@ spec:
   instances: {{ .Values.db.instances }}
   {{- if .Values.db.imageName }}
   imageName: {{ .Values.db.imageName }}
-  {{- end }}
-  {{- if .Values.db.version }}
-  postgresVersion: {{ .Values.db.version | int }}
-  {{- end }}
+  {{- end }}}
   storage:
     size: {{ .Values.db.storageSize }}
   {{- if .Values.db.database }}
