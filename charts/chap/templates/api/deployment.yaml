@@ -64,6 +64,11 @@ spec:
             {{- include "chap.databaseEnv" . | nindent 12 }}
             - name: CHAP_LOGS_DIR
               value: /data/logs
+            - name: CHAP_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dhis2-core-helm.fullname" . }}-core-chap-api-token-secret
+                  key: token
           volumeMounts:
             - name: tmpfs
               mountPath: /tmp
