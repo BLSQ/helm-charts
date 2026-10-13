@@ -12,7 +12,7 @@ data:
     # Clickhouse configuration
     {{- if .Values.clickhouseAnalytics.enabled }}
     analytics.database = clickhouse
-    analytics.connection.url = jdbc:clickhouse://{{ .Values.clickhouseAnalytics.host }}:{{ .Values.clickhouseAnalytics.port }}/${DHIS2_CH_DATABASE}
+    analytics.connection.url = jdbc:clickhouse://{{ .Values.clickhouseAnalytics.host }}:{{ .Values.clickhouseAnalytics.port }}/${DHIS2_CH_DATABASE}?compress=0
     analytics.database.catalog = ${DHIS2_CH_DATABASE}
     analytics.connection.username = ${DHIS2_CH_USER}
     analytics.connection.password = ${DHIS2_CH_PASSWORD}
